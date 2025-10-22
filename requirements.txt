@@ -1,0 +1,34 @@
+# Core dependencies
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+websockets==12.0
+python-multipart==0.0.6
+
+# Excel processing
+pandas>=2.2.0  # Support for Python 3.13
+openpyxl==3.1.2
+xlrd==2.0.1
+
+# AI and NLP
+openai==1.10.0
+anthropic==0.18.0
+langchain==0.1.4
+langchain-openai==0.0.5
+
+# Data analysis and visualization
+numpy>=1.26.0  # Compatible with Python 3.13
+matplotlib>=3.8.0
+seaborn>=0.13.0
+plotly>=5.18.0
+
+# Audio processing for voice input
+speechrecognition==3.10.1
+pydub==0.25.1
+pyaudio==0.2.14
+
+# Utilities
+python-dotenv==1.0.0
+aiofiles==23.2.1
+pydantic==2.5.3
+pydantic-settings==2.1.0
+

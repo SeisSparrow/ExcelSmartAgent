@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  excel-smart-agent:
+    build: .
+    container_name: excel-smart-agent
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - MODEL_NAME=${MODEL_NAME:-gpt-4-turbo-preview}
+    env_file:
+      - .env
+    restart: unless-stopped
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000
+

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Smart Agent - 智能数据分析助手</title>
+    <link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <div class="container">
+                <h1>📊 Excel Smart Agent</h1>
+                <p class="subtitle">智能数据分析助手 - 支持语音输入</p>
+            </div>
+        </header>
+
+        <main class="container main-content">
+            <!-- File Upload Section -->
+            <section class="card upload-section">
+                <h2>📁 上传Excel文件</h2>
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display: none;">
+                    <label for="fileInput" class="upload-label">
+                        <span class="upload-icon">⬆️</span>
+                        <span>点击或拖拽文件到此处</span>
+                        <span class="upload-hint">支持 .xlsx, .xls, .csv 格式</span>
+                    </label>
+                </div>
+                <div id="fileList" class="file-list"></div>
+            </section>
+
+            <!-- Query Input Section -->
+            <section class="card query-section">
+                <h2>💬 输入您的问题</h2>
+                <div class="input-group">
+                    <textarea 
+                        id="queryInput" 
+                        placeholder="例如：帮我分析各地区的销售趋势"
+                        rows="3"
+                    ></textarea>
+                    <div class="button-group">
+                        <button id="voiceBtn" class="btn btn-voice" title="语音输入">
+                            🎤 语音输入
+                        </button>
+                        <button id="submitBtn" class="btn btn-primary">
+                            ▶️ 开始分析
+                        </button>
+                    </div>
+                </div>
+                <div id="statusMessage" class="status-message"></div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="card results-section" id="resultsSection" style="display: none;">
+                <h2>📈 分析结果</h2>
+                
+                <!-- Columns Used -->
+                <div class="result-item">
+                    <h3>📋 使用的数据列</h3>
+                    <div id="columnsUsed" class="columns-list"></div>
+                </div>
+
+                <!-- Generated Code -->
+                <div class="result-item">
+                    <h3>💻 生成的代码</h3>
+                    <div class="code-container">
+                        <button class="copy-btn" onclick="copyCode()">📋 复制</button>
+                        <pre id="generatedCode"><code></code></pre>
+                    </div>
+                    <div id="codeExplanation" class="explanation"></div>
+                </div>
+
+                <!-- Analysis Summary -->
+                <div class="result-item">
+                    <h3>📝 分析总结</h3>
+                    <div id="analysisSummary" class="summary"></div>
+                </div>
+
+                <!-- Data Result -->
+                <div class="result-item">
+                    <h3>📊 数据结果</h3>
+                    <div id="dataResult" class="data-result"></div>
+                </div>
+
+                <!-- Visualizations -->
+                <div class="result-item" id="visualizationsSection" style="display: none;">
+                    <h3>📉 可视化图表</h3>
+                    <div id="visualizations" class="visualizations"></div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p>© 2025 Excel Smart Agent | 基于AI的智能数据分析系统</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="src/app.js" type="module"></script>
+</body>
+</html>
+
