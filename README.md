@@ -171,6 +171,27 @@ plt.tight_layout()
 - 📊 完整指南：[VISUALIZATION_FIX_GUIDE.md](VISUALIZATION_FIX_GUIDE.md)
 - 💻 示例代码：`examples/correct_visualization_example.py`
 
+### 显示"使用的数据列为空"或"数据结果No result"？
+
+**症状：** 代码执行成功，但看不到使用的列和分析结果
+
+**原因：** 代码没有正确设置结果变量或列追踪失败
+
+**解决方案：**
+
+系统已自动修复！新生成的代码会：
+- ✅ 明确设置`result`变量
+- ✅ 自动追踪使用的数据列
+- ✅ 支持7种列引用模式
+
+**如果仍有问题**：
+- 重新提交查询，让系统生成新代码
+- 查看代码执行错误信息（如果有）
+- 检查生成的代码是否包含`result = ...`
+
+**详细指南**：
+- 📖 完整说明：[FIX_RESULT_AND_COLUMNS.md](FIX_RESULT_AND_COLUMNS.md)
+
 ## 🧪 测试
 
 生成示例数据：

@@ -115,8 +115,14 @@ class CodeExecutor:
             
             output = captured_output.getvalue()
             
-            # Extract columns used
+            # Extract columns used (combine tracked and statically analyzed)
             columns_used = list(self.columns_accessed)
+            
+            # If no columns were tracked, try static analysis as fallback
+            if not columns_used:
+                static_columns = self.extract_columns_from_code(code)
+                # Verify these columns exist in the dataframe
+                columns_used = [col for col in static_columns if col in data.columns]
             
             # Record execution
             self.execution_history.append({
@@ -176,7 +182,35 @@ class CodeExecutor:
 
             def __getattr__(self, name):
                 # Forward all other attributes to the original DataFrame
-                return getattr(self._df, name)
+                attr = getattr(self._df, name)
+                
+                # If it's a method that takes column names as arguments, wrap it
+                if callable(attr) and name in ['groupby', 'sort_values', 'drop', 'fillna', 'rename']:
+                    def wrapper(*args, **kwargs):
+                        # Track column names from arguments
+                        for arg in args:
+                            if isinstance(arg, str) and arg in self._df.columns:
+                                self._executor.columns_accessed.add(arg)
+                            elif isinstance(arg, list):
+                                for col in arg:
+                                    if isinstance(col, str) and col in self._df.columns:
+                                        self._executor.columns_accessed.add(col)
+                        
+                        # Track column names from keyword arguments
+                        for key, value in kwargs.items():
+                            if key in ['by', 'columns', 'subset']:
+                                if isinstance(value, str) and value in self._df.columns:
+                                    self._executor.columns_accessed.add(value)
+                                elif isinstance(value, list):
+                                    for col in value:
+                                        if isinstance(col, str) and col in self._df.columns:
+                                            self._executor.columns_accessed.add(col)
+                        
+                        return attr(*args, **kwargs)
+                    
+                    return wrapper
+                
+                return attr
 
             def __repr__(self):
                 return repr(self._df)
@@ -232,17 +266,38 @@ class CodeExecutor:
         """
         columns = []
         
-        # Pattern for df['column'] or df["column"]
+        # Pattern 1: df['column'] or df["column"]
         pattern1 = r"df\s*\[\s*['\"]([^'\"]+)['\"]\s*\]"
         columns.extend(re.findall(pattern1, code))
         
-        # Pattern for df[['col1', 'col2']]
+        # Pattern 2: df[['col1', 'col2']]
         pattern2 = r"df\s*\[\s*\[([^\]]+)\]\s*\]"
         matches = re.findall(pattern2, code)
         for match in matches:
             # Extract individual column names
             cols = re.findall(r"['\"]([^'\"]+)['\"]", match)
             columns.extend(cols)
+        
+        # Pattern 3: df.groupby('column') or df.groupby(['col1', 'col2'])
+        pattern3 = r"\.groupby\s*\(\s*['\"]([^'\"]+)['\"]\s*\)"
+        columns.extend(re.findall(pattern3, code))
+        
+        pattern4 = r"\.groupby\s*\(\s*\[([^\]]+)\]\s*\)"
+        matches = re.findall(pattern4, code)
+        for match in matches:
+            cols = re.findall(r"['\"]([^'\"]+)['\"]", match)
+            columns.extend(cols)
+        
+        # Pattern 5: df.sort_values('column') or by='column'
+        pattern5 = r"\.sort_values\s*\(\s*['\"]([^'\"]+)['\"]\s*\)"
+        columns.extend(re.findall(pattern5, code))
+        
+        pattern6 = r"by\s*=\s*['\"]([^'\"]+)['\"]"
+        columns.extend(re.findall(pattern6, code))
+        
+        # Pattern 7: aggregate functions like df['col'].sum()
+        pattern7 = r"df\s*\[\s*['\"]([^'\"]+)['\"]\s*\]\s*\.\s*(?:sum|mean|count|min|max|std|var)\s*\("
+        columns.extend(re.findall(pattern7, code))
         
         return list(set(columns))  # Remove duplicates
     

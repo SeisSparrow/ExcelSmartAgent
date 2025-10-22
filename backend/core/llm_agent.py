@@ -198,11 +198,39 @@ class LLMAgent:
 
 10. **图表尺寸**: 对于趋势图，推荐使用 figsize=(16, 8)；对于简单图表，使用 figsize=(12, 6)
 
+11. **结果返回** (非常重要):
+    生成的代码必须将最终结果赋值给`result`变量，以便系统能够显示结果：
+    
+    ```python
+    # 对于数据分析（返回DataFrame或Series）
+    result = df.groupby('地区')['销售额'].sum()
+    
+    # 对于统计计算（返回单个值或字典）
+    result = df['销售额'].sum()
+    # 或
+    result = {
+        '总销售额': total_sales,
+        '平均销售额': avg_sales,
+        '最大值': max_sales
+    }
+    
+    # 对于纯可视化（绘图为主，没有数据结果）
+    # 绘图代码...
+    result = "图表已生成"  # 或其他说明性文字
+    
+    # 对于混合输出（既有数据又有图表）
+    summary_data = df.groupby('地区')['销售额'].sum()
+    # 绘图代码...
+    result = summary_data  # 返回数据结果
+    ```
+    
+    注意：如果不设置`result`变量，系统将无法显示分析结果！
+
 生成的代码应该是完整可执行的，包含必要的import语句。
 代码中应该假设数据已经加载到名为'df'的DataFrame中。
 
 请返回JSON格式，包含：
-- code: 完整的Python代码
+- code: 完整的Python代码（必须包含result变量赋值）
 - explanation: 代码的中文解释
 - required_columns: 使用的列名列表
 - output_type: 输出类型（dataframe/plot/summary/mixed）
