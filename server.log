@@ -1,0 +1,216 @@
+INFO:     Will watch for changes in these directories: ['/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [54558] using WatchFiles
+INFO:     Started server process [54573]
+INFO:     Waiting for application startup.
+2025-10-21 21:32:38,638 - backend.main - INFO - Starting Excel Smart Agent...
+2025-10-21 21:32:38,638 - backend.main - INFO - Data path: /Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/data/excel_files
+2025-10-21 21:32:38,638 - backend.main - INFO - Processed data path: /Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/data/processed
+2025-10-21 21:32:38,638 - backend.main - INFO - Log path: /Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/logs
+INFO:     Application startup complete.
+INFO:     127.0.0.1:59545 - "GET / HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'backend/utils/audio_processor.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2025-10-21 21:33:06,828 - backend.main - INFO - Shutting down Excel Smart Agent...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [54573]
+INFO:     Started server process [54822]
+INFO:     Waiting for application startup.
+2025-10-21 21:33:07,656 - backend.main - INFO - Starting Excel Smart Agent...
+2025-10-21 21:33:07,656 - backend.main - INFO - Data path: /Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/data/excel_files
+2025-10-21 21:33:07,656 - backend.main - INFO - Processed data path: /Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/data/processed
+2025-10-21 21:33:07,656 - backend.main - INFO - Log path: /Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/logs
+INFO:     Application startup complete.
+INFO:     127.0.0.1:59613 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59613 - "GET /src/styles/main.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59614 - "GET /src/app.js HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 59615) - "WebSocket /ws" [accepted]
+2025-10-21 21:33:26,778 - backend.api.websocket_handler - INFO - New WebSocket connection: 4861042896
+INFO:     connection open
+INFO:     127.0.0.1:59614 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59623 - "POST /api/upload HTTP/1.1" 200 OK
+2025-10-21 21:33:58,781 - backend.api.websocket_handler - ERROR - WebSocket error: Cannot call "receive" once a disconnect message has been received.
+2025-10-21 21:33:58,781 - backend.api.websocket_handler - ERROR - Error sending message: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-10-21 21:33:58,781 - backend.api.websocket_handler - INFO - WebSocket disconnected: 4861042896
+INFO:     connection closed
+INFO:     127.0.0.1:59625 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59625 - "GET /src/app.js HTTP/1.1" 304 Not Modified
+INFO:     ('127.0.0.1', 59626) - "WebSocket /ws" [accepted]
+2025-10-21 21:33:58,836 - backend.api.websocket_handler - INFO - New WebSocket connection: 4872317584
+INFO:     connection open
+INFO:     127.0.0.1:59625 - "POST /api/upload HTTP/1.1" 200 OK
+2025-10-21 21:35:42,668 - backend.api.websocket_handler - ERROR - WebSocket error: Cannot call "receive" once a disconnect message has been received.
+2025-10-21 21:35:42,669 - backend.api.websocket_handler - ERROR - Error sending message: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-10-21 21:35:42,669 - backend.api.websocket_handler - INFO - WebSocket disconnected: 4872317584
+INFO:     connection closed
+INFO:     127.0.0.1:59669 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59669 - "GET /src/app.js HTTP/1.1" 304 Not Modified
+INFO:     ('127.0.0.1', 59670) - "WebSocket /ws" [accepted]
+2025-10-21 21:35:42,715 - backend.api.websocket_handler - INFO - New WebSocket connection: 4871510672
+INFO:     connection open
+INFO:     127.0.0.1:59669 - "POST /api/upload HTTP/1.1" 200 OK
+2025-10-21 21:36:10,271 - backend.api.websocket_handler - ERROR - WebSocket error: Cannot call "receive" once a disconnect message has been received.
+2025-10-21 21:36:10,271 - backend.api.websocket_handler - ERROR - Error sending message: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-10-21 21:36:10,272 - backend.api.websocket_handler - INFO - WebSocket disconnected: 4871510672
+INFO:     connection closed
+INFO:     127.0.0.1:59731 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59731 - "GET /src/styles/main.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59733 - "GET /src/app.js HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 59735) - "WebSocket /ws" [accepted]
+2025-10-21 21:36:25,269 - backend.api.websocket_handler - INFO - New WebSocket connection: 4871634704
+INFO:     connection open
+INFO:     127.0.0.1:59731 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+2025-10-21 21:36:38,241 - backend.utils.audio_processor - INFO - Processing audio: 180268 bytes total, 180224 bytes PCM data
+2025-10-21 21:36:39,414 - backend.utils.audio_processor - INFO - ✅ Transcribed successfully: 帮我分析各地区的销售趋势
+2025-10-21 21:36:40,744 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-21 21:36:45,892 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-21 21:36:45,943 - matplotlib.category - INFO - Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2025-10-21 21:36:45,950 - matplotlib.category - INFO - Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+<string>:27: UserWarning: Glyph 26085 (\N{CJK UNIFIED IDEOGRAPH-65E5}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 26399 (\N{CJK UNIFIED IDEOGRAPH-671F}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 38144 (\N{CJK UNIFIED IDEOGRAPH-9500}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 21806 (\N{CJK UNIFIED IDEOGRAPH-552E}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 39069 (\N{CJK UNIFIED IDEOGRAPH-989D}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 21508 (\N{CJK UNIFIED IDEOGRAPH-5404}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 22320 (\N{CJK UNIFIED IDEOGRAPH-5730}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 21306 (\N{CJK UNIFIED IDEOGRAPH-533A}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 36235 (\N{CJK UNIFIED IDEOGRAPH-8D8B}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 21183 (\N{CJK UNIFIED IDEOGRAPH-52BF}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 19978 (\N{CJK UNIFIED IDEOGRAPH-4E0A}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 28023 (\N{CJK UNIFIED IDEOGRAPH-6D77}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 21271 (\N{CJK UNIFIED IDEOGRAPH-5317}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 20140 (\N{CJK UNIFIED IDEOGRAPH-4EAC}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 24191 (\N{CJK UNIFIED IDEOGRAPH-5E7F}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 24030 (\N{CJK UNIFIED IDEOGRAPH-5DDE}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 26477 (\N{CJK UNIFIED IDEOGRAPH-676D}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 28145 (\N{CJK UNIFIED IDEOGRAPH-6DF1}) missing from font(s) DejaVu Sans.
+<string>:27: UserWarning: Glyph 22323 (\N{CJK UNIFIED IDEOGRAPH-5733}) missing from font(s) DejaVu Sans.
+<string>:29: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 38144 (\N{CJK UNIFIED IDEOGRAPH-9500}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 21806 (\N{CJK UNIFIED IDEOGRAPH-552E}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 39069 (\N{CJK UNIFIED IDEOGRAPH-989D}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 21508 (\N{CJK UNIFIED IDEOGRAPH-5404}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 22320 (\N{CJK UNIFIED IDEOGRAPH-5730}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 21306 (\N{CJK UNIFIED IDEOGRAPH-533A}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 36235 (\N{CJK UNIFIED IDEOGRAPH-8D8B}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 21183 (\N{CJK UNIFIED IDEOGRAPH-52BF}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 26085 (\N{CJK UNIFIED IDEOGRAPH-65E5}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 26399 (\N{CJK UNIFIED IDEOGRAPH-671F}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 19978 (\N{CJK UNIFIED IDEOGRAPH-4E0A}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 28023 (\N{CJK UNIFIED IDEOGRAPH-6D77}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 21271 (\N{CJK UNIFIED IDEOGRAPH-5317}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 20140 (\N{CJK UNIFIED IDEOGRAPH-4EAC}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 24191 (\N{CJK UNIFIED IDEOGRAPH-5E7F}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 24030 (\N{CJK UNIFIED IDEOGRAPH-5DDE}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 26477 (\N{CJK UNIFIED IDEOGRAPH-676D}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 28145 (\N{CJK UNIFIED IDEOGRAPH-6DF1}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 22323 (\N{CJK UNIFIED IDEOGRAPH-5733}) missing from font(s) DejaVu Sans.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+2025-10-21 21:36:50,228 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:59761 - "POST /api/upload HTTP/1.1" 200 OK
+2025-10-21 21:37:08,314 - backend.utils.audio_processor - INFO - Processing audio: 172076 bytes total, 172032 bytes PCM data
+2025-10-21 21:37:09,473 - backend.utils.audio_processor - INFO - ✅ Transcribed successfully: 帮我分析各地区的销售趋势
+2025-10-21 21:37:11,006 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-21 21:37:17,749 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-21 21:37:17,773 - matplotlib.category - INFO - Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2025-10-21 21:37:17,779 - matplotlib.category - INFO - Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+<string>:41: UserWarning: Glyph 26085 (\N{CJK UNIFIED IDEOGRAPH-65E5}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 26399 (\N{CJK UNIFIED IDEOGRAPH-671F}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 38144 (\N{CJK UNIFIED IDEOGRAPH-9500}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 21806 (\N{CJK UNIFIED IDEOGRAPH-552E}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 39069 (\N{CJK UNIFIED IDEOGRAPH-989D}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 21508 (\N{CJK UNIFIED IDEOGRAPH-5404}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 22320 (\N{CJK UNIFIED IDEOGRAPH-5730}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 21306 (\N{CJK UNIFIED IDEOGRAPH-533A}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 36235 (\N{CJK UNIFIED IDEOGRAPH-8D8B}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 21183 (\N{CJK UNIFIED IDEOGRAPH-52BF}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 19978 (\N{CJK UNIFIED IDEOGRAPH-4E0A}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 28023 (\N{CJK UNIFIED IDEOGRAPH-6D77}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 21271 (\N{CJK UNIFIED IDEOGRAPH-5317}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 20140 (\N{CJK UNIFIED IDEOGRAPH-4EAC}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 24191 (\N{CJK UNIFIED IDEOGRAPH-5E7F}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 24030 (\N{CJK UNIFIED IDEOGRAPH-5DDE}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 26477 (\N{CJK UNIFIED IDEOGRAPH-676D}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 28145 (\N{CJK UNIFIED IDEOGRAPH-6DF1}) missing from font(s) Arial.
+<string>:41: UserWarning: Glyph 22323 (\N{CJK UNIFIED IDEOGRAPH-5733}) missing from font(s) Arial.
+<string>:42: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 26085 (\N{CJK UNIFIED IDEOGRAPH-65E5}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 26399 (\N{CJK UNIFIED IDEOGRAPH-671F}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 38144 (\N{CJK UNIFIED IDEOGRAPH-9500}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 21806 (\N{CJK UNIFIED IDEOGRAPH-552E}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 39069 (\N{CJK UNIFIED IDEOGRAPH-989D}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 21508 (\N{CJK UNIFIED IDEOGRAPH-5404}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 22320 (\N{CJK UNIFIED IDEOGRAPH-5730}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 21306 (\N{CJK UNIFIED IDEOGRAPH-533A}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 36235 (\N{CJK UNIFIED IDEOGRAPH-8D8B}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 21183 (\N{CJK UNIFIED IDEOGRAPH-52BF}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 19978 (\N{CJK UNIFIED IDEOGRAPH-4E0A}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 28023 (\N{CJK UNIFIED IDEOGRAPH-6D77}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 21271 (\N{CJK UNIFIED IDEOGRAPH-5317}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 20140 (\N{CJK UNIFIED IDEOGRAPH-4EAC}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 24191 (\N{CJK UNIFIED IDEOGRAPH-5E7F}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 24030 (\N{CJK UNIFIED IDEOGRAPH-5DDE}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 26477 (\N{CJK UNIFIED IDEOGRAPH-676D}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 28145 (\N{CJK UNIFIED IDEOGRAPH-6DF1}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+/Users/zhennan/Documents/GithubRepos/ExcelSmartAgent/backend/core/code_executor.py:88: UserWarning: Glyph 22323 (\N{CJK UNIFIED IDEOGRAPH-5733}) missing from font(s) Arial.
+  fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+2025-10-21 21:37:22,949 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:59801 - "GET / HTTP/1.1" 304 Not Modified
+2025-10-21 21:37:50,846 - backend.api.websocket_handler - ERROR - WebSocket error: Cannot call "receive" once a disconnect message has been received.
+2025-10-21 21:37:50,846 - backend.api.websocket_handler - ERROR - Error sending message: Unexpected ASGI message 'websocket.send', after sending 'websocket.close' or response already completed.
+2025-10-21 21:37:50,846 - backend.api.websocket_handler - INFO - WebSocket disconnected: 4871634704
+INFO:     connection closed
+INFO:     127.0.0.1:59801 - "GET /src/app.js HTTP/1.1" 304 Not Modified
+INFO:     ('127.0.0.1', 59805) - "WebSocket /ws" [accepted]
+2025-10-21 21:37:50,875 - backend.api.websocket_handler - INFO - New WebSocket connection: 4967192592
+INFO:     connection open
+INFO:     127.0.0.1:59801 - "POST /api/upload HTTP/1.1" 200 OK
+2025-10-21 21:38:08,371 - backend.utils.audio_processor - INFO - Processing audio: 139308 bytes total, 139264 bytes PCM data
+2025-10-21 21:38:09,492 - backend.utils.audio_processor - INFO - ✅ Transcribed successfully: 找出销售额最高的10个产品
+2025-10-21 21:38:12,055 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-21 21:38:15,112 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-21 21:38:17,684 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:59803 - "POST /api/upload HTTP/1.1" 200 OK
+2025-10-21 21:38:50,330 - backend.utils.audio_processor - INFO - Processing audio: 172076 bytes total, 172032 bytes PCM data
+2025-10-21 21:38:51,481 - backend.utils.audio_processor - INFO - ✅ Transcribed successfully: 统计一下客户的地区分布
+2025-10-21 21:38:52,712 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-21 21:38:54,385 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-21 21:38:58,037 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-10-21 21:39:00,327 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"

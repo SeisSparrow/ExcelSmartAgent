@@ -210,22 +210,41 @@ class ExcelSmartAgent {
         const voiceBtn = document.getElementById('voiceBtn');
 
         if (!this.isRecording) {
-            // Start recording
+            // Start recording with Web Audio API for better format control
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                this.mediaRecorder = new MediaRecorder(stream);
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        channelCount: 1,
+                        sampleRate: 16000,
+                        echoCancellation: true,
+                        noiseSuppression: true
+                    } 
+                });
+                
+                // Use Web Audio API to get raw audio data
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+                this.mediaStreamSource = this.audioContext.createMediaStreamSource(stream);
+                this.audioWorkletSupported = false;
+                
+                // Use ScriptProcessor as fallback (deprecated but widely supported)
+                this.scriptProcessor = this.audioContext.createScriptProcessor(4096, 1, 1);
                 this.audioChunks = [];
-
-                this.mediaRecorder.ondataavailable = (event) => {
-                    this.audioChunks.push(event.data);
+                
+                this.scriptProcessor.onaudioprocess = (e) => {
+                    const inputData = e.inputBuffer.getChannelData(0);
+                    // Convert Float32Array to Int16Array for WAV
+                    const int16Data = new Int16Array(inputData.length);
+                    for (let i = 0; i < inputData.length; i++) {
+                        const s = Math.max(-1, Math.min(1, inputData[i]));
+                        int16Data[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+                    }
+                    this.audioChunks.push(int16Data);
                 };
-
-                this.mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-                    this.sendAudioData(audioBlob);
-                };
-
-                this.mediaRecorder.start();
+                
+                this.mediaStreamSource.connect(this.scriptProcessor);
+                this.scriptProcessor.connect(this.audioContext.destination);
+                this.mediaStream = stream;
+                
                 this.isRecording = true;
                 voiceBtn.classList.add('recording');
                 voiceBtn.innerHTML = '⏹️ 停止录音';
@@ -237,15 +256,95 @@ class ExcelSmartAgent {
             }
 
         } else {
-            // Stop recording
-            if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
-                this.mediaRecorder.stop();
-                this.mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            // Stop recording and convert to WAV
+            if (this.scriptProcessor) {
+                this.scriptProcessor.disconnect();
+                this.mediaStreamSource.disconnect();
             }
+            if (this.mediaStream) {
+                this.mediaStream.getTracks().forEach(track => track.stop());
+            }
+            if (this.audioContext) {
+                this.audioContext.close();
+            }
+            
             this.isRecording = false;
             voiceBtn.classList.remove('recording');
             voiceBtn.innerHTML = '🎤 语音输入';
             this.showStatus('录音已停止，正在识别...', 'info');
+            
+            // Convert collected audio chunks to WAV
+            this.convertToWavAndSend();
+        }
+    }
+    
+    convertToWavAndSend() {
+        if (this.audioChunks.length === 0) {
+            this.showStatus('未录制到音频', 'warning');
+            return;
+        }
+        
+        // Calculate total length
+        let totalLength = 0;
+        for (let chunk of this.audioChunks) {
+            totalLength += chunk.length;
+        }
+        
+        // Merge all chunks
+        const mergedData = new Int16Array(totalLength);
+        let offset = 0;
+        for (let chunk of this.audioChunks) {
+            mergedData.set(chunk, offset);
+            offset += chunk.length;
+        }
+        
+        // Create WAV file
+        const wavBlob = this.createWavBlob(mergedData, 16000);
+        this.sendAudioData(wavBlob);
+    }
+    
+    createWavBlob(audioData, sampleRate) {
+        const numChannels = 1;
+        const bitsPerSample = 16;
+        const bytesPerSample = bitsPerSample / 8;
+        const blockAlign = numChannels * bytesPerSample;
+        
+        const buffer = new ArrayBuffer(44 + audioData.length * bytesPerSample);
+        const view = new DataView(buffer);
+        
+        // WAV header
+        // "RIFF" chunk descriptor
+        this.writeString(view, 0, 'RIFF');
+        view.setUint32(4, 36 + audioData.length * bytesPerSample, true);
+        this.writeString(view, 8, 'WAVE');
+        
+        // "fmt " sub-chunk
+        this.writeString(view, 12, 'fmt ');
+        view.setUint32(16, 16, true); // Subchunk1Size (16 for PCM)
+        view.setUint16(20, 1, true); // AudioFormat (1 for PCM)
+        view.setUint16(22, numChannels, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * blockAlign, true); // ByteRate
+        view.setUint16(32, blockAlign, true);
+        view.setUint16(34, bitsPerSample, true);
+        
+        // "data" sub-chunk
+        this.writeString(view, 36, 'data');
+        view.setUint32(40, audioData.length * bytesPerSample, true);
+        
+        // Write audio data
+        let offset = 44;
+        for (let i = 0; i < audioData.length; i++) {
+            view.setInt16(offset, audioData[i], true);
+            offset += 2;
+        }
+        
+        return new Blob([buffer], { type: 'audio/wav' });
+    }
+    
+    writeString(view, offset, string) {
+        for (let i = 0; i < string.length; i++) {
+            view.setUint8(offset + i, string.charCodeAt(i));
         }
     }
 

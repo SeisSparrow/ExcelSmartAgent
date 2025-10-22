@@ -123,7 +123,37 @@ kill -9 $(lsof -ti:8000)
 PORT=8080
 ```
 
-### 4. API 连接失败
+### 4. 麦克风权限错误
+
+**错误**: "无法访问麦克风，请检查权限"
+
+**快速解决**:
+
+1. **使用正确的访问地址**（最常见原因）:
+   ```
+   ✅ http://localhost:8000
+   ❌ http://0.0.0.0:8000 或 http://192.168.x.x:8000
+   ```
+
+2. **macOS 系统权限**:
+   ```bash
+   # 打开系统设置
+   open "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone"
+   ```
+   - 找到您的浏览器（Chrome/Safari/Edge）
+   - 勾选允许访问麦克风
+
+3. **浏览器权限**:
+   - Chrome: 地址栏左侧 🔒 → 网站设置 → 麦克风 → 允许
+   - Safari: 设置 → 网站 → 麦克风 → localhost → 允许
+
+4. **重置权限**:
+   - 清除浏览器缓存和 Cookies
+   - 刷新页面重新授权
+
+**详细指南**: 查看 `MICROPHONE_SETUP.md`
+
+### 5. API 连接失败
 
 **检查清单**:
 - [ ] API 密钥是否正确

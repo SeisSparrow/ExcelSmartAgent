@@ -38,7 +38,7 @@ class AudioProcessor:
         Convert audio bytes to text using Google Speech Recognition
         
         Args:
-            audio_data: Audio data in bytes (WAV format)
+            audio_data: Audio data in bytes (WAV format from browser)
             language: Language code (default: zh-CN for Chinese)
             
         Returns:
@@ -49,23 +49,37 @@ class AudioProcessor:
             return None
             
         try:
-            # Create AudioData object from bytes
-            audio = sr.AudioData(audio_data, sample_rate=16000, sample_width=2)
+            # Frontend now sends proper WAV format (16000Hz, 16-bit, mono)
+            # Parse WAV header to get the actual audio data
+            if len(audio_data) < 44:
+                logger.error("Audio data too short (no WAV header)")
+                return None
+            
+            # Skip WAV header (44 bytes) and get raw PCM data
+            pcm_data = audio_data[44:]
+            
+            # Create AudioData object with proper parameters
+            # Frontend sends: 16000Hz sample rate, 16-bit (2 bytes per sample), mono
+            audio = sr.AudioData(pcm_data, sample_rate=16000, sample_width=2)
+            
+            logger.info(f"Processing audio: {len(audio_data)} bytes total, {len(pcm_data)} bytes PCM data")
             
             # Try Google Speech Recognition (free)
             try:
                 text = self.recognizer.recognize_google(audio, language=language)
-                logger.info(f"Transcribed: {text}")
+                logger.info(f"✅ Transcribed successfully: {text}")
                 return text
             except sr.UnknownValueError:
-                logger.warning("Could not understand audio")
+                logger.warning("Google Speech Recognition could not understand audio")
                 return None
             except sr.RequestError as e:
-                logger.error(f"Speech recognition service error: {e}")
+                logger.error(f"Could not request results from Google Speech Recognition service; {e}")
                 return None
                 
         except Exception as e:
             logger.error(f"Error processing audio: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
             return None
     
     def audio_file_to_text(self, file_path: str, language: str = "zh-CN") -> Optional[str]:
