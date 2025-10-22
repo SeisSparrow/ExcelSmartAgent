@@ -145,6 +145,32 @@ docker-compose up -d
 
 详细故障排除：查看 `TROUBLESHOOTING.md`
 
+### 图表X轴标签重叠畸形？
+
+**症状：** 时间序列图表的X轴日期标签密集重叠，无法阅读
+
+**原因：** 数据点过多（如1000行日期数据）导致标签拥挤
+
+**解决方案：**
+
+系统已自动修复！新生成的代码会包含正确的X轴处理。
+
+**手动修复参考：**
+```python
+import matplotlib.dates as mdates
+ax = plt.gca()
+ax.xaxis.set_major_locator(mdates.AutoDateLocator(maxticks=15))
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+plt.xticks(rotation=45, ha='right', fontsize=9)
+plt.gcf().autofmt_xdate()
+plt.tight_layout()
+```
+
+**详细指南：**
+- 📖 快速修复：[QUICKFIX_VISUALIZATION.md](QUICKFIX_VISUALIZATION.md)
+- 📊 完整指南：[VISUALIZATION_FIX_GUIDE.md](VISUALIZATION_FIX_GUIDE.md)
+- 💻 示例代码：`examples/correct_visualization_example.py`
+
 ## 🧪 测试
 
 生成示例数据：
