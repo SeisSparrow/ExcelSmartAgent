@@ -12,6 +12,20 @@ from backend.config import settings
 logger = logging.getLogger(__name__)
 
 
+def make_json_serializable(obj):
+    """Convert objects to JSON-serializable format"""
+    if isinstance(obj, dict):
+        return {k: make_json_serializable(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [make_json_serializable(item) for item in obj]
+    elif hasattr(obj, 'isoformat'):  # datetime objects
+        return obj.isoformat()
+    elif hasattr(obj, '__dict__'):  # Custom objects
+        return str(obj)
+    else:
+        return obj
+
+
 class LLMAgent:
     """Agent for natural language understanding and code generation"""
     
@@ -68,8 +82,11 @@ class LLMAgent:
 - expected_output: 期望的输出类型（table/chart/summary）
 """
         
+        # Convert available_data to be JSON serializable
+        json_safe_data = make_json_serializable(available_data)
+
         user_prompt = f"""可用数据信息：
-{json.dumps(available_data, ensure_ascii=False, indent=2)}
+{json.dumps(json_safe_data, ensure_ascii=False, indent=2)}
 
 用户问题：{query}
 
@@ -130,6 +147,90 @@ class LLMAgent:
 4. 处理可能的异常情况
 5. 返回结果应该易于理解
 
+6. **图形对象管理** (重要): 整个绘图过程中只能创建一个图形对象：
+   ```python
+   # 只在绘图开始时调用一次 plt.figure()
+   plt.figure(figsize=(14, 8))  # 根据需要调整尺寸
+
+   # 后续绘图代码不应再调用 plt.figure()
+   # 如果需要调整图形属性，直接使用 plt.gcf() 或 plt.gca()
+   ```
+
+7. **中文字体配置** (重要): 如果使用matplotlib/seaborn绘图，必须在绘图代码之前添加：
+   ```python
+   # 配置中文字体支持
+   plt.rcParams['font.sans-serif'] = ['PingFang SC', 'Heiti SC', 'STHeiti', 'SimHei', 'Arial Unicode MS']
+   plt.rcParams['axes.unicode_minus'] = False
+   ```
+
+8. **X轴标签优化** (重要): 当X轴有很多标签时（如日期、分类），必须智能优化显示：
+
+   **智能X轴标签处理**：
+   ```python
+   # 智能检测图表类型和数据特征
+   is_stacked_chart = (len(df.columns) > 3 and
+                      ('堆叠' in query.lower() or '叠加' in query.lower() or 'stacked' in query.lower()))
+   is_time_series = pd.api.types.is_datetime64_any_dtype(df.index) or '日期' in str(df.index.name).lower()
+
+   # 根据图表类型和数据特征优化标签显示
+   if is_stacked_chart and is_time_series:
+       # 堆叠时间序列图：选择重要时间点显示
+       if len(df) > 15:
+           # 选择每月第一天显示
+           important_dates = []
+           current_month = None
+           for date in df.index:
+               if date.month != current_month:
+                   important_dates.append(date)
+                   current_month = date.month
+                   if len(important_dates) >= 12:
+                       break
+
+           if important_dates:
+               plt.xticks([df.index.get_loc(d) for d in important_dates],
+                        [d.strftime('%Y-%m-%d') for d in important_dates],
+                        rotation=45, ha='right', fontsize=7)
+           else:
+               plt.xticks(rotation=45, ha='right', fontsize=8)
+       else:
+           plt.xticks(rotation=45, ha='right', fontsize=9)
+
+   elif is_time_series:
+       # 普通时间序列图：旋转标签
+       plt.xticks(rotation=45, ha='right', fontsize=8)
+
+       # 如果数据点过多，抽样显示
+       if len(df) > 30:
+           step = len(df) // 20
+           plt.xticks(range(0, len(df), step),
+                    [df.index[i].strftime('%Y-%m-%d') if hasattr(df.index[i], 'strftime') else str(df.index[i])
+                     for i in range(0, len(df), step)],
+                    rotation=45, ha='right', fontsize=7)
+
+   else:
+       # 非时间序列图：普通旋转
+       plt.xticks(rotation=45, ha='right', fontsize=8)
+
+   # 日期格式化（如果适用）
+   if is_time_series:
+       try:
+           import matplotlib.dates as mdates
+           plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+           plt.gcf().autofmt_xdate()
+       except:
+           pass  # 如果日期格式化失败，继续使用默认格式
+
+   # 调整布局防止标签被裁剪
+   plt.tight_layout()
+   ```
+
+9. **图表尺寸智能调整**: 根据数据量和图表类型自动调整：
+   ```python
+   # 注意：plt.figure()应该在绘图代码的开始处调用，这里只是示例
+   # 智能尺寸调整逻辑应该在实际绘图代码中实现
+   pass
+   ```
+
 生成的代码应该是完整可执行的，包含必要的import语句。
 代码中应该假设数据已经加载到名为'df'的DataFrame中。
 
@@ -141,11 +242,15 @@ class LLMAgent:
 - visualization_needed: 是否需要可视化（true/false）
 """
         
+        # Convert data_info and analysis_plan to JSON-serializable format
+        json_safe_data_info = make_json_serializable(data_info)
+        json_safe_analysis_plan = make_json_serializable(analysis_plan)
+
         user_prompt = f"""数据信息：
-{json.dumps(data_info, ensure_ascii=False, indent=2)}
+{json.dumps(json_safe_data_info, ensure_ascii=False, indent=2)}
 
 分析计划：
-{json.dumps(analysis_plan, ensure_ascii=False, indent=2)}
+{json.dumps(json_safe_analysis_plan, ensure_ascii=False, indent=2)}
 
 用户原始问题：{query}
 
@@ -274,7 +379,10 @@ class LLMAgent:
         if hasattr(result, 'to_string'):
             result_str = result.to_string()
         elif hasattr(result, 'to_dict'):
-            result_str = json.dumps(result.to_dict(), ensure_ascii=False, indent=2)
+            # Convert to dict first, then to JSON-serializable format
+            result_dict = result.to_dict()
+            json_safe_result = make_json_serializable(result_dict)
+            result_str = json.dumps(json_safe_result, ensure_ascii=False, indent=2)
         else:
             result_str = str(result)
         

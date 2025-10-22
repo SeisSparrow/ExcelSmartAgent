@@ -18,8 +18,17 @@ from pathlib import Path
 import logging
 import traceback
 import re
+import platform
 
 logger = logging.getLogger(__name__)
+
+# Configure matplotlib for Chinese font support
+# Note: The actual font configuration is done in generated code to avoid module-level issues
+try:
+    plt.rcParams['axes.unicode_minus'] = False  # Fix minus sign display
+    logger.info("Matplotlib configured for Chinese font support")
+except Exception as e:
+    logger.warning(f"Could not configure matplotlib: {e}")
 
 
 class CodeExecutor:
@@ -150,7 +159,7 @@ class CodeExecutor:
             def __init__(self, dataframe, executor):
                 self._df = dataframe
                 self._executor = executor
-            
+
             def __getitem__(self, key):
                 # Track column access
                 if isinstance(key, str):
@@ -160,17 +169,21 @@ class CodeExecutor:
                         if isinstance(k, str):
                             self._executor.columns_accessed.add(k)
                 return self._df[key]
-            
+
+            def __setitem__(self, key, value):
+                # Forward item assignment to the original DataFrame
+                self._df[key] = value
+
             def __getattr__(self, name):
                 # Forward all other attributes to the original DataFrame
                 return getattr(self._df, name)
-            
+
             def __repr__(self):
                 return repr(self._df)
-            
+
             def __str__(self):
                 return str(self._df)
-        
+
         return TrackedDataFrame(df, self)
     
     def validate_code(self, code: str) -> Tuple[bool, Optional[str]]:

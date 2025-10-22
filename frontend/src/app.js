@@ -160,9 +160,8 @@ class ExcelSmartAgent {
             const result = await response.json();
 
             if (result.success) {
-                // Display the processed file info
-                this.addFileToList(result.result);
-                this.showStatus('文件上传并处理成功！', 'success');
+                // File uploaded successfully, let WebSocket handle the processing notification
+                this.showStatus('文件已上传，正在处理...', 'info');
                 
                 // Notify WebSocket about new file (using correct path)
                 if (this.ws && this.ws.readyState === WebSocket.OPEN) {
@@ -173,6 +172,10 @@ class ExcelSmartAgent {
                             path: result.file_name  // Use correct file_name from response
                         }
                     }));
+                } else {
+                    // If WebSocket not connected, add file directly
+                    this.addFileToList(result.result);
+                    this.showStatus('文件上传并处理成功！', 'success');
                 }
             } else {
                 this.showStatus('文件上传失败', 'error');

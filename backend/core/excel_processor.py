@@ -9,6 +9,8 @@ from typing import Dict, List, Tuple, Optional, Any
 import openpyxl
 from openpyxl.utils import get_column_letter
 import logging
+from datetime import datetime, timedelta
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -194,20 +196,89 @@ class ExcelProcessor:
         """Clean and standardize the DataFrame"""
         # Remove completely empty rows
         df = df.dropna(how='all')
-        
+
         # Remove completely empty columns
         df = df.dropna(axis=1, how='all')
-        
+
         # Reset index
         df = df.reset_index(drop=True)
-        
+
         # Strip whitespace from string columns
         for col in df.columns:
             if df[col].dtype == 'object':
                 df[col] = df[col].apply(lambda x: x.strip() if isinstance(x, str) else x)
-        
+
+        # Convert Excel dates to proper datetime objects
+        df = self._convert_excel_dates(df)
+
         return df
-    
+
+    def _convert_excel_dates(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Convert Excel dates to proper datetime objects
+        Excel stores dates as serial numbers starting from 1900-01-01
+        """
+        for col in df.columns:
+            if df[col].dtype in ['int64', 'float64']:
+                # Check if column might contain Excel date serial numbers
+                # Excel dates typically range from ~40000 (2024) to ~2000 (1900s)
+                if self._is_likely_excel_date(df[col]):
+                    try:
+                        # Excel incorrectly treats 1900 as a leap year, so we need to account for this
+                        df[col] = pd.to_datetime(df[col] - 2, unit='D', origin='1900-01-01')
+                        logger.info(f"Converted Excel date column: {col}")
+                    except Exception as e:
+                        logger.warning(f"Could not convert Excel date column {col}: {e}")
+
+            # Also check for string columns that might contain date strings
+            elif df[col].dtype == 'object':
+                # Try to detect date patterns in string columns
+                sample_values = df[col].dropna().head(10)
+                if self._is_likely_date_string(sample_values):
+                    try:
+                        df[col] = pd.to_datetime(df[col])
+                        logger.info(f"Converted date string column: {col}")
+                    except Exception as e:
+                        logger.warning(f"Could not convert date string column {col}: {e}")
+
+        return df
+
+    def _is_likely_excel_date(self, series: pd.Series) -> bool:
+        """Check if a numeric series is likely Excel date serial numbers"""
+        if len(series) == 0:
+            return False
+
+        # Check if values are in reasonable Excel date range
+        # Excel dates: ~40000 (2024) to ~2000 (1900s)
+        min_val = series.min()
+        max_val = series.max()
+
+        # Must be within Excel date range and not too small (avoid integers that are actually IDs)
+        return (2000 <= min_val <= 50000 and  # Reasonable Excel date range
+                2000 <= max_val <= 50000 and
+                series.dtype in ['int64', 'float64'])
+
+    def _is_likely_date_string(self, series: pd.Series) -> bool:
+        """Check if string series likely contains dates"""
+        if len(series) == 0:
+            return False
+
+        # Check for common date patterns
+        date_patterns = [
+            r'\d{4}-\d{2}-\d{2}',  # YYYY-MM-DD
+            r'\d{2}/\d{2}/\d{4}',  # MM/DD/YYYY
+            r'\d{2}-\d{2}-\d{4}',  # MM-DD-YYYY
+            r'\d{4}/\d{2}/\d{2}',  # YYYY/MM/DD
+        ]
+
+        for value in series:
+            if isinstance(value, str):
+                for pattern in date_patterns:
+                    if re.search(pattern, value):
+                        return True
+
+        return False
+
     def get_column_info(self, df: pd.DataFrame) -> Dict[str, Dict[str, Any]]:
         """
         Get detailed information about each column
