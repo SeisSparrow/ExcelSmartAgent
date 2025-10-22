@@ -190,7 +190,146 @@ python -m backend.main
 - Google 语音识别需要联网
 - 确保可以访问 Google 服务
 
-### 7. 文件上传失败
+### 7. 图表中文显示问题（Ubuntu/Linux）
+
+**症状**: 图表中的中文标题和标签显示为方框（□□□）或乱码
+
+**原因**: Ubuntu/Linux 系统缺少中文字体
+
+**解决方案**:
+
+#### 步骤 1: 安装中文字体
+
+**Ubuntu/Debian**:
+```bash
+sudo apt-get update
+sudo apt-get install fonts-noto-cjk fonts-wqy-microhei fonts-wqy-zenhei
+```
+
+**CentOS/RHEL/Fedora**:
+```bash
+sudo yum install google-noto-sans-cjk-fonts wqy-microhei-fonts
+# 或
+sudo dnf install google-noto-sans-cjk-fonts wqy-microhei-fonts
+```
+
+#### 步骤 2: 清除 matplotlib 缓存
+
+```bash
+# 清除字体缓存
+rm -rf ~/.cache/matplotlib
+
+# 如果使用 Docker，在容器内执行
+docker-compose exec app rm -rf /root/.cache/matplotlib
+```
+
+#### 步骤 3: 重启服务
+
+```bash
+# 如果使用 Docker
+docker-compose restart
+
+# 如果直接运行
+# 按 Ctrl+C 停止服务，然后重新启动
+python -m backend.main
+```
+
+#### 步骤 4: 验证字体安装
+
+```bash
+# 检查可用的中文字体
+fc-list :lang=zh | grep -E "(Noto|WenQuanYi)"
+
+# 应该看到类似输出：
+# /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc: Noto Sans CJK SC:style=Regular
+# /usr/share/fonts/truetype/wqy/wqy-microhei.ttc: WenQuanYi Micro Hei:style=Regular
+```
+
+#### 步骤 5: Python 测试
+
+创建测试脚本 `test_chinese_font.py`:
+```python
+import matplotlib.pyplot as plt
+import matplotlib
+
+# 配置中文字体
+plt.rcParams['font.sans-serif'] = [
+    'Noto Sans CJK SC', 'WenQuanYi Micro Hei', 'Droid Sans Fallback',
+    'PingFang SC', 'SimHei', 'Microsoft YaHei', 'sans-serif'
+]
+plt.rcParams['axes.unicode_minus'] = False
+
+# 检查字体
+print("当前字体:", plt.rcParams['font.sans-serif'])
+print("\n可用字体列表:")
+for font in matplotlib.font_manager.findSystemFonts(fontpaths=None, fontext='ttf'):
+    if 'Noto' in font or 'WenQuanYi' in font or 'wqy' in font.lower():
+        print(f"  ✓ {font}")
+
+# 测试绘图
+fig, ax = plt.subplots(figsize=(8, 6))
+ax.plot([1, 2, 3], [1, 4, 2])
+ax.set_title('测试中文标题', fontsize=16)
+ax.set_xlabel('横轴标签')
+ax.set_ylabel('纵轴标签')
+plt.savefig('test_chinese.png', dpi=100, bbox_inches='tight')
+print("\n✓ 测试图表已保存到 test_chinese.png")
+print("请打开图片检查中文是否正常显示")
+```
+
+运行测试:
+```bash
+python test_chinese_font.py
+```
+
+#### Docker 环境配置
+
+如果使用 Docker，需要在 `Dockerfile` 中添加字体安装：
+
+```dockerfile
+# 在 Dockerfile 中添加
+RUN apt-get update && apt-get install -y \
+    fonts-noto-cjk \
+    fonts-wqy-microhei \
+    fonts-wqy-zenhei \
+    fontconfig \
+    && fc-cache -fv \
+    && rm -rf /var/lib/apt/lists/*
+```
+
+然后重新构建镜像：
+```bash
+docker-compose down
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+#### 仍然无法显示？
+
+如果以上步骤都完成后仍然无法显示中文，请尝试：
+
+1. **手动指定字体文件**：
+```python
+import matplotlib.font_manager as fm
+
+# 添加字体文件路径
+font_path = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
+fm.fontManager.addfont(font_path)
+plt.rcParams['font.family'] = 'Noto Sans CJK SC'
+```
+
+2. **检查系统日志**：
+```bash
+tail -f logs/app.log | grep -i font
+```
+
+3. **联系支持**：提供以下信息
+   - OS 版本: `lsb_release -a`
+   - 已安装字体: `fc-list :lang=zh`
+   - Python 版本: `python --version`
+   - matplotlib 版本: `pip show matplotlib`
+
+### 8. 文件上传失败
 
 **检查**:
 - 文件大小是否超过 50MB
@@ -203,7 +342,7 @@ python -m backend.main
 MAX_FILE_SIZE=100MB
 ```
 
-### 8. 内存不足
+### 9. 内存不足
 
 **增加内存限制**:
 ```bash
@@ -217,7 +356,7 @@ ulimit -v unlimited  # Linux/Mac
 - 使用 chunksize 参数读取
 - 及时清理处理后的数据
 
-### 9. WebSocket 连接断开
+### 10. WebSocket 连接断开
 
 **可能原因**:
 - 网络不稳定
@@ -229,7 +368,7 @@ ulimit -v unlimited  # Linux/Mac
 - 检查网络连接
 - 查看日志: `logs/app.log`
 
-### 10. Docker 相关问题
+### 11. Docker 相关问题
 
 **容器无法启动**:
 ```bash

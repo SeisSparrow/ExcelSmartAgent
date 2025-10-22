@@ -2,12 +2,17 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies and Chinese fonts
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
     portaudio19-dev \
     python3-dev \
+    fonts-noto-cjk \
+    fonts-wqy-microhei \
+    fonts-wqy-zenhei \
+    fontconfig \
+    && fc-cache -fv \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements

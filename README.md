@@ -119,6 +119,30 @@ pip config set global.trusted-host "pypi.tuna.tsinghua.edu.cn files.pythonhosted
 **备选方案：**
 如果语音识别不准确，建议使用文本输入（更快更准确）
 
+### Ubuntu/Linux 图表中文显示问题？
+
+**症状：** 图表中的中文显示为方框（□□□）
+
+**快速修复：**
+```bash
+# 一键修复脚本
+bash fix_chinese_fonts_ubuntu.sh
+
+# 或手动安装字体
+sudo apt-get install fonts-noto-cjk fonts-wqy-microhei
+rm -rf ~/.cache/matplotlib
+
+# 测试中文显示
+python test_chinese_font.py
+```
+
+**Docker 用户：**
+```bash
+docker-compose down
+docker-compose build --no-cache
+docker-compose up -d
+```
+
 详细故障排除：查看 `TROUBLESHOOTING.md`
 
 ## 🧪 测试

@@ -158,8 +158,17 @@ class LLMAgent:
 
 7. **中文字体配置** (重要): 如果使用matplotlib/seaborn绘图，必须在绘图代码之前添加：
    ```python
-   # 配置中文字体支持
-   plt.rcParams['font.sans-serif'] = ['PingFang SC', 'Heiti SC', 'STHeiti', 'SimHei', 'Arial Unicode MS']
+   # 配置中文字体支持（支持macOS、Windows、Linux）
+   plt.rcParams['font.sans-serif'] = [
+       # Linux常用字体
+       'Noto Sans CJK SC', 'WenQuanYi Micro Hei', 'Droid Sans Fallback', 'DejaVu Sans',
+       # macOS字体
+       'PingFang SC', 'Heiti SC', 'STHeiti',
+       # Windows字体
+       'SimHei', 'Microsoft YaHei',
+       # 通用备选
+       'Arial Unicode MS', 'sans-serif'
+   ]
    plt.rcParams['axes.unicode_minus'] = False
    ```
 

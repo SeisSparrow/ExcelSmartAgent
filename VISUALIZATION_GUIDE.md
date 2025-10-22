@@ -8,9 +8,18 @@ Excel Smart Agent 的图表自动优化功能说明。
 
 ### 1. 中文字体支持 ✅
 
-所有图表自动配置中文字体，确保标题、标签正确显示：
+所有图表自动配置中文字体，支持 **macOS、Windows 和 Linux** 系统：
 ```python
-plt.rcParams['font.sans-serif'] = ['PingFang SC', 'Heiti SC', 'STHeiti', 'SimHei', 'Arial Unicode MS']
+plt.rcParams['font.sans-serif'] = [
+    # Linux常用字体
+    'Noto Sans CJK SC', 'WenQuanYi Micro Hei', 'Droid Sans Fallback',
+    # macOS字体
+    'PingFang SC', 'Heiti SC', 'STHeiti',
+    # Windows字体
+    'SimHei', 'Microsoft YaHei',
+    # 通用备选
+    'Arial Unicode MS', 'sans-serif'
+]
 plt.rcParams['axes.unicode_minus'] = False
 ```
 
@@ -18,6 +27,18 @@ plt.rcParams['axes.unicode_minus'] = False
 - ✅ 标题正常显示：`销售额趋势图`
 - ✅ 轴标签显示：`日期`、`销售额（万元）`
 - ❌ 之前显示：`□□□□□`
+
+**Ubuntu/Linux 用户**：如果中文仍然无法显示，请安装中文字体：
+```bash
+# Ubuntu/Debian
+sudo apt-get install fonts-noto-cjk fonts-wqy-microhei
+
+# CentOS/RHEL
+sudo yum install google-noto-sans-cjk-fonts wqy-microhei-fonts
+
+# 安装后清除matplotlib缓存
+rm -rf ~/.cache/matplotlib
+```
 
 ---
 
